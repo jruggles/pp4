@@ -5,7 +5,7 @@ CS3513
 '''
 
 import numpy as np
-from math import frexp, ldexp
+from math import frexp, ldexp, pow
 import sys
 import datetime
 
@@ -21,17 +21,12 @@ def optRoot(x):
 		shiftexp -= 3
 	nexp = (exp - shiftexp) / 3
 	a = ldexp(a, shiftexp)
-	# print nfraction
 	approx = nfraction * a
 	better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
-	# print better - approx
 
 	while abs(better - approx) > e:
-		# print approx
 		approx = better
 		better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
-		# print "test: ", better - approx
-		# print e
 		iteration += 1
 
 	y = ldexp(approx, nexp)
@@ -39,13 +34,12 @@ def optRoot(x):
 
 
 def newtonRoot(x, n):
-	nfraction = 1/n
+	nfraction = 1.0/n
 	nminus = n-1
 	approx = nfraction * x
 	better = ((nfraction)*(((nminus)*approx)+((x)/(approx**(nminus)))))
 
-	while better != approx:
-		print approx
+	while abs(better - approx) > 0.0000000000005:
 		approx = better
 		better = ((nfraction)*(((nminus)*approx)+((x)/(approx**(nminus)))))
 
@@ -70,11 +64,30 @@ print A
 
 #X = np.random.uniform(1000000, 100000000, 10000)
 
+print "Optimized"
 print datetime.datetime.now()
 
 for x in A:
 	cubeA = optRoot(x)
 
 print datetime.datetime.now()
+
+print "Brute Force"
+print datetime.datetime.now()
+
+for x in A:
+	cubeA = newtonRoot(x, 3.0)
+
+
+print datetime.datetime.now()
+
+print "Built In"
+print datetime.datetime.now()
+
+for x in A:
+	cubeA = pow(x, (1.0/3.0))
+
+print datetime.datetime.now()
+
 
 #np.savetxt(outB, X, fmt="%f")
