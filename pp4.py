@@ -7,7 +7,7 @@ CS3513
 import numpy as np
 from math import frexp, ldexp, pow
 import sys
-import datetime
+import time
 
 def returnOne():
 	return 1.0
@@ -62,39 +62,76 @@ if __name__ == "__main__":
 Initialize the input and output data
 '''
 A = np.loadtxt(inA)
-
+baseTiming = []
+baseOutput = []
+optimizedTiming = []
+optimizedOutput = []
+bruteForceTiming = []
+bruteForceOutput = []
+builtInTiming = []
+builtInOutput = []
+bruteForceComparison = []
+optimizedComparison = []
+toggle = True
 
 print "Base"
 for _ in xrange(10):
-	start = datetime.datetime.now()
+	start = time.time()
 	for x in A:
 		cubeA = returnOne()
-	stop = datetime.datetime.now()
-	print stop - start
+		if toggle:
+			baseOutput.append(cubeA)
+	stop = time.time()
+	baseTiming.append(stop - start)
+	toggle = False
+baseTiming.sort()
+print "Best time: ", baseTiming[0]
+toggle = True
 
 print "Optimized"
 for _ in xrange(10):
-	start = datetime.datetime.now()
+	start = time.time()
 	for x in A:
 		cubeA = optRoot(x)
-	stop = datetime.datetime.now()
-	print stop - start
+		if toggle:
+			optimizedOutput.append(cubeA)
+	stop = time.time()
+	optimizedTiming.append(stop - start)
+	toggle = False
+optimizedTiming.sort()
+print "Best time: ", optimizedTiming[0]
+toggle = True
 
 print "Brute Force"
 for _ in xrange(10):
-	start = datetime.datetime.now()
+	start = time.time()
 	for x in A:
 		cubeA = newtonRoot(x)
-	stop = datetime.datetime.now()
-	print stop - start
+		if toggle:
+			bruteForceOutput.append(cubeA)
+	stop = time.time()
+	bruteForceTiming.append(stop - start)
+	toggle = False
+bruteForceTiming.sort()
+print "Best time: ", bruteForceTiming[0]
+toggle = True
 
 print "Built In"
 for _ in xrange(10):
-	start = datetime.datetime.now()
+	start = time.time()
 	for x in A:
 		cubeA = builtIn(x)
-	stop = datetime.datetime.now()
-	print stop - start
+		if toggle:
+			builtInOutput.append(cubeA)
+	stop = time.time()
+	builtInTiming.append(stop - start)
+	toggle = False
+builtInTiming.sort()
+print "Best time: ", builtInTiming[0]
+
+for i in range(len(builtInOutput)):
+	optimizedComparison.append(np.linalg.norm(builtInOutput[i] - optimizedOutput[i]))
+	bruteForceComparison.append(np.linalg.norm(builtInOutput[i] - bruteForceOutput[i]))
 
 
 #np.savetxt(outB, A, fmt="%f")
