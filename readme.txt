@@ -7,14 +7,26 @@ Compiler Version: GCC 4.2.1
 OS: Apple OS X 10.11.3
 ---------------------------
 
-This program will take a matrix containing 10,000 
+This program will take a matrix containing 10,000 float values, and it
+will find the cube root of those values through three methods.
+	- Newton's Method
+	- Newton's Method which has been optimized for floating point values
+	- Python's built in 'pow' function
+It will time each function and save each of their results, which will then
+be juxtaposed to determine their accuracy.
 
 To run this program, compile and run it from the command line along with
-a matrix file containing a group of points in 3D space, a file for output,
-and a constant which will be the number of points to be evaluated.
+a matrix file containing the input values and a file for output.
 For example, from the command line in OS X it would look like this:
 
-"$ python pp4.py inputFile.txt outputFile.txt k"
+"$ python pp4.py inputFile.txt outputFile.txt"
 
 
-BUGS:
+
+
+SOURCES:
+
+I relied on some of the methods provided in Ken Turkowski's "Finding the
+Cube Root" to optimize my own method. This can be found here:
+
+https://people.freebsd.org/~lstewart/references/apple_tr_kt32_cuberoot.pdf

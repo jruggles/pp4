@@ -18,29 +18,27 @@ def optRoot(x):
 	y = x
 	a, exp = frexp(y)
 	nfraction = 1.0/3.0
-	iteration = 0
 	shiftexp = exp%3
 	if shiftexp > 0:
 		shiftexp -= 3
 	nexp = (exp - shiftexp) / 3
 	a = ldexp(a, shiftexp)
-	approx = nfraction * a
+	approx = a
 	better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
 
 	while abs(better - approx) > e:
 		approx = better
 		better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
-		iteration += 1
 
 	y = ldexp(approx, nexp)
 	return y
 
 
 def newtonRoot(x):
-	approx = (1.0/3.0) * x
+	approx = x / 3.0
 	better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
-	while abs(better - approx) > 0.0000000000005:
+	while better < approx:
 		approx = better
 		better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
