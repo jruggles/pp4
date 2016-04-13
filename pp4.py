@@ -9,6 +9,9 @@ from math import frexp, ldexp, pow
 import sys
 import datetime
 
+def returnOne():
+	return 1.0
+
 
 def optRoot(x):
 	e = sys.float_info.epsilon
@@ -33,17 +36,19 @@ def optRoot(x):
 	return y
 
 
-def newtonRoot(x, n):
-	nfraction = 1.0/n
-	nminus = n-1
-	approx = nfraction * x
-	better = ((nfraction)*(((nminus)*approx)+((x)/(approx**(nminus)))))
+def newtonRoot(x):
+	approx = (1.0/3.0) * x
+	better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
 	while abs(better - approx) > 0.0000000000005:
 		approx = better
-		better = ((nfraction)*(((nminus)*approx)+((x)/(approx**(nminus)))))
+		better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
 	return approx
+
+
+def builtIn(x):
+	return pow(x, (1.0/3.0))
 
 
 if __name__ == "__main__":
@@ -58,36 +63,40 @@ if __name__ == "__main__":
 '''
 Initialize the input and output data
 '''
-M = np.matrix(np.loadtxt(inA))
-A = np.squeeze(np.asarray(M))
-print A
+A = np.loadtxt(inA)
 
-#X = np.random.uniform(1000000, 100000000, 10000)
+
+print "Base"
+for _ in xrange(10):
+	start = datetime.datetime.now()
+	for x in A:
+		cubeA = returnOne()
+	stop = datetime.datetime.now()
+	print stop - start
 
 print "Optimized"
-print datetime.datetime.now()
-
-for x in A:
-	cubeA = optRoot(x)
-
-print datetime.datetime.now()
+for _ in xrange(10):
+	start = datetime.datetime.now()
+	for x in A:
+		cubeA = optRoot(x)
+	stop = datetime.datetime.now()
+	print stop - start
 
 print "Brute Force"
-print datetime.datetime.now()
-
-for x in A:
-	cubeA = newtonRoot(x, 3.0)
-
-
-print datetime.datetime.now()
+for _ in xrange(10):
+	start = datetime.datetime.now()
+	for x in A:
+		cubeA = newtonRoot(x)
+	stop = datetime.datetime.now()
+	print stop - start
 
 print "Built In"
-print datetime.datetime.now()
+for _ in xrange(10):
+	start = datetime.datetime.now()
+	for x in A:
+		cubeA = builtIn(x)
+	stop = datetime.datetime.now()
+	print stop - start
 
-for x in A:
-	cubeA = pow(x, (1.0/3.0))
 
-print datetime.datetime.now()
-
-
-#np.savetxt(outB, X, fmt="%f")
+#np.savetxt(outB, A, fmt="%f")
