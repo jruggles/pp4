@@ -21,7 +21,7 @@ def optRoot(x):
 	shiftexp = exp%3
 	if shiftexp > 0:
 		shiftexp -= 3
-	nexp = (exp - shiftexp) / 3
+	newexp = (exp - shiftexp) / 3
 	a = ldexp(a, shiftexp)
 	approx = a
 	better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
@@ -30,7 +30,7 @@ def optRoot(x):
 		approx = better
 		better = ((nfraction)*(((2.0)*approx)+((a)/(approx*approx))))
 
-	y = ldexp(approx, nexp)
+	y = ldexp(approx, newexp)
 	return y
 
 
@@ -74,8 +74,17 @@ builtInOutput = []
 output = []
 toggle = True
 
+
+'''
+Each one of these blocks will run through a function 11 times.
+The frist time will be to store the output in an array, and
+the subsequent 10 will only calculate and return the values
+(though they will not be stored anywhere). All iterations will
+be timed and we will compare the best times of each.
+'''
+
 print "Base"
-for _ in xrange(10):
+for _ in xrange(11):
 	start = time.time()
 	for x in A:
 		cubeA = returnOne()
@@ -89,7 +98,7 @@ print "Best time: ", baseTiming[0]
 toggle = True
 
 print "Optimized"
-for _ in xrange(10):
+for _ in xrange(11):
 	start = time.time()
 	for x in A:
 		cubeA = optRoot(x)
@@ -104,7 +113,7 @@ toggle = True
 optimizedArray = np.array(optimizedOutput)
 
 print "Brute Force"
-for _ in xrange(10):
+for _ in xrange(11):
 	start = time.time()
 	for x in A:
 		cubeA = newtonRoot(x)
@@ -119,7 +128,7 @@ toggle = True
 bruteForceArray = np.array(bruteForceOutput)
 
 print "Built In"
-for _ in xrange(10):
+for _ in xrange(11):
 	start = time.time()
 	for x in A:
 		cubeA = builtIn(x)
