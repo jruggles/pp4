@@ -57,7 +57,8 @@ if __name__ == "__main__":
 
 	except IndexError:
 		print "Insufficient parameters supplied."
-		#sys.exit(1)
+		print "Usage: python pp4.py <input_file> <output_file>"
+		sys.exit(1)
 
 '''
 Initialize the input and output data
