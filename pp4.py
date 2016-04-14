@@ -35,10 +35,11 @@ def optRoot(x):
 
 
 def newtonRoot(x):
+	e = sys.float_info.epsilon
 	approx = x / 3.0
 	better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
-	while better < approx:
+	while abs(better - approx) > (1000 * e):
 		approx = better
 		better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
 
@@ -70,8 +71,7 @@ bruteForceTiming = []
 bruteForceOutput = []
 builtInTiming = []
 builtInOutput = []
-bruteForceComparison = []
-optimizedComparison = []
+output = []
 toggle = True
 
 print "Base"
@@ -101,6 +101,7 @@ for _ in xrange(10):
 optimizedTiming.sort()
 print "Best time: ", optimizedTiming[0]
 toggle = True
+optimizedArray = np.array(optimizedOutput)
 
 print "Brute Force"
 for _ in xrange(10):
@@ -115,6 +116,7 @@ for _ in xrange(10):
 bruteForceTiming.sort()
 print "Best time: ", bruteForceTiming[0]
 toggle = True
+bruteForceArray = np.array(bruteForceOutput)
 
 print "Built In"
 for _ in xrange(10):
@@ -128,10 +130,36 @@ for _ in xrange(10):
 	toggle = False
 builtInTiming.sort()
 print "Best time: ", builtInTiming[0]
+builtInArray = np.array(builtInOutput)
 
-for i in range(len(builtInOutput)):
-	optimizedComparison.append(np.linalg.norm(builtInOutput[i] - optimizedOutput[i]))
-	bruteForceComparison.append(np.linalg.norm(builtInOutput[i] - bruteForceOutput[i]))
+ratioNM = (bruteForceTiming[0] - baseTiming[0]) / (builtInTiming[0] - baseTiming[0])
+ratioOpt = (optimizedTiming[0] - baseTiming[0]) / (builtInTiming[0] - baseTiming[0])
 
+bruteForceNorm = np.linalg.norm((bruteForceArray - builtInArray), 1)
+optimizedNorm = np.linalg.norm((optimizedArray - builtInArray), 1)
 
-#np.savetxt(outB, A, fmt="%f")
+output.append("Base Timing for System Overhead:")
+output.append(baseTiming[0])
+output.append("")
+output.append("Built in power function best time:")
+output.append(builtInTiming[0])
+output.append("")
+output.append("Optimized Newton's Method best time:")
+output.append(optimizedTiming[0])
+output.append("")
+output.append("Brute Force Newton's Method best time:")
+output.append(bruteForceTiming[0])
+output.append("")
+output.append("Norm-1 of Optimized Output - Built In Output:")
+output.append(optimizedNorm)
+output.append("")
+output.append("Norm-1 of Brute Force Output - Built In Output:")
+output.append(bruteForceNorm)
+output.append("")
+output.append("Timing Ratio between Optimized / Built In:")
+output.append(ratioOpt)
+output.append("")
+output.append("Timing Ratio between Brute Force / Built In:")
+output.append(ratioNM)
+
+np.savetxt(outB, output, fmt="%s")
