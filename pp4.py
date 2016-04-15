@@ -10,14 +10,18 @@ import sys
 import time
 
 def returnOne():
+	'''
+	Base function to determine system overhead
+	'''
 	return 1.0
 
 
-def optRoot(x):
+def optRoot(x, nfraction):
+	'''
+	Optimied Newton's Method function
+	'''
 	e = sys.float_info.epsilon
-	y = x
-	a, exp = frexp(y)
-	nfraction = 1.0/3.0
+	a, exp = frexp(x)
 	shiftexp = exp%3
 	if shiftexp > 0:
 		shiftexp -= 3
@@ -35,6 +39,9 @@ def optRoot(x):
 
 
 def newtonRoot(x):
+	'''
+	Brute Force Newton's Method function
+	'''
 	e = sys.float_info.epsilon
 	approx = x / 3.0
 	better = ((1.0/3.0)*(((2.0)*approx)+((x)/(approx**(2)))))
@@ -47,6 +54,9 @@ def newtonRoot(x):
 
 
 def builtIn(x):
+	'''
+	Python standard library cube root function
+	'''
 	return pow(x, (1.0/3.0))
 
 
@@ -74,6 +84,7 @@ builtInTiming = []
 builtInOutput = []
 output = []
 toggle = True
+oneThird = (1.0/3.0)
 
 
 '''
@@ -102,7 +113,7 @@ print "Optimized"
 for _ in xrange(11):
 	start = time.time()
 	for x in A:
-		cubeA = optRoot(x)
+		cubeA = optRoot(x, oneThird)
 		if toggle:
 			optimizedOutput.append(cubeA)
 	stop = time.time()

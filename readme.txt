@@ -5,6 +5,7 @@ Created by Jonathan Ruggles
 Language: Python 2.7.10
 Compiler Version: GCC 4.2.1
 OS: Apple OS X 10.11.3
+Processor: Intel i7 2.66 GHz (circa 2010)
 ---------------------------
 
 This program will take a matrix containing 10,000 float values, and it
@@ -20,6 +21,9 @@ a matrix file containing the input values and a file for output.
 For example, from the command line in OS X it would look like this:
 
 "$ python pp4.py inputFile.txt outputFile.txt"
+
+Included will be a text file containing the values which were used for
+testing. 
 
 
 
